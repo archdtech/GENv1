@@ -18,8 +18,7 @@ import {
   Award,
   Calendar,
   Zap,
-  Bell,
-  Sparkles
+  Bell
 } from "lucide-react";
 import DNAUpload from "@/components/DNAUpload";
 import MealLogging from "@/components/MealLogging";
@@ -32,7 +31,6 @@ import DNAInsights from "@/components/enhanced/DNAInsights";
 import Notifications from "@/components/enhanced/Notifications";
 import ActivityTracker from "@/components/enhanced/ActivityTracker";
 import NotificationBell from "@/components/enhanced/NotificationBell";
-import { useNotificationTriggers } from "@/contexts/NotificationContext";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -185,13 +183,6 @@ export default function Home() {
                 <span>{userStats.points.toLocaleString()} pts</span>
               </Badge>
               <NotificationBell />
-              <a 
-                href="/metabite-dna-app.tar.gz"
-                className="inline-flex items-center px-3 py-1 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-                download
-              >
-                Download Source
-              </a>
             </div>
           </div>
         </div>
