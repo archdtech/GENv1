@@ -23,6 +23,8 @@ model User {
   activities   Activity[]
   streaks      Streak[]
   learningProgress LearningProgress[]
+  nutrientBalances NutrientBalance[]
+  userProgress UserProgress[]
 }
 
 model DNAProfile {
@@ -114,4 +116,40 @@ model LearningProgress {
 
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model NutrientBalance {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime @default(now())
+  protein     Float    // grams
+  carbs       Float    // grams
+  fat         Float    // grams
+  fiber       Float    // grams
+  sugar       Float    // grams
+  vitamins    String?  // JSON string
+  minerals    String?  // JSON string
+  score       Float    // 0-100 balance score
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
+
+model UserProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime @default(now())
+  level       Int      @default(1)
+  points      Int      @default(0)
+  goalsMet    Int      @default(0)
+  streaks     Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
 }
