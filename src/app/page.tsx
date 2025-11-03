@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -35,33 +35,6 @@ import NotificationBell from "@/components/enhanced/NotificationBell";
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [mealRefreshTrigger, setMealRefreshTrigger] = useState(0);
-  const notificationTriggers = useNotificationTriggers();
-  const notificationsTriggered = useRef(false);
-
-  // Simulate some notifications for demo - only trigger once
-  useEffect(() => {
-    if (notificationsTriggered.current) return;
-    notificationsTriggered.current = true;
-
-    // Trigger some demo notifications
-    const timer1 = setTimeout(() => {
-      notificationTriggers.triggerMealLogged("Mediterranean Quinoa Bowl", 92);
-    }, 2000);
-    
-    const timer2 = setTimeout(() => {
-      notificationTriggers.triggerStreakMilestone("mealLogging", 7);
-    }, 5000);
-    
-    const timer3 = setTimeout(() => {
-      notificationTriggers.triggerLevelUp(3);
-    }, 8000);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []); // Empty dependency array to run only once
 
   // Enhanced user stats with more details
   const userStats = {
@@ -150,7 +123,7 @@ export default function Home() {
     {
       title: "Vitamin D Strategy",
       content: "Low vitamin D absorption - consider supplementation with healthy fats to enhance absorption.",
-      icon: Sparkles,
+      icon: Target,
       priority: "high"
     }
   ];
@@ -223,7 +196,7 @@ export default function Home() {
             <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-0">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Sparkles className="h-5 w-5 text-purple-600" />
+                  <Target className="h-5 w-5 text-purple-600" />
                   <span>Welcome to Your DNA Journey</span>
                 </CardTitle>
                 <CardDescription>
