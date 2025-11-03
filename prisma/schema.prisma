@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  dnaProfiles  DNAProfile[]
+  meals        Meal[]
+  activities   Activity[]
+  streaks      Streak[]
+  learningProgress LearningProgress[]
+}
+
+model DNAProfile {
+  id        String   @id @default(cuid())
+  userId    String
+  fileName  String
+  fileData  String   // Base64 encoded or file path
+  riskLevel Int      // 1-5 risk assessment
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  traits DNATrait[]
+}
+
+model DNATrait {
+  id           String   @id @default(cuid())
+  profileId    String
+  traitName    String
+  traitValue   String
+  category     String   // metabolism, vitamin, circadian, etc.
+  riskLevel    Int      // 1-5
+  description  String?
+  createdAt    DateTime @default(now())
+
+  // Relations
+  profile DNAProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Meal {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  mealType    String   // breakfast, lunch, dinner, snack
+  description String?
+  calories    Int?
+  protein     Float?
+  carbs       Float?
+  fat         Float?
+  fiber       Float?
+  dnaAlignment Int     // 0-100 alignment score
+  feedback    String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  userId      String
+  activityType String  // cardio, strength, flexibility, balance
+  duration    Int     // minutes
+  intensity   String  // low, moderate, high
+  description String?
+  calories    Int?
+  feedback    String?
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Streak {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // mealLogging, proteinGoal, activity, learning
+  count     Int      // current streak count
+  lastDate  DateTime // last activity date
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LearningProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  contentType String   // article, video, quiz
+  contentId   String
+  title       String
+  progress    Float    // 0-100
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
